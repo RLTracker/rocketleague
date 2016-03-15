@@ -1,5 +1,5 @@
 require "rocketleague/version"
 
-module Rocketleague
+module RocketLeague
   # TODO
 end

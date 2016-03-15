@@ -5,7 +5,7 @@ require 'rocketleague/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "rocketleague"
-  spec.version       = Rocketleague::VERSION
+  spec.version       = RocketLeague::VERSION
   spec.author        = "rltracker"
 
   spec.summary       = "Rocket League API"
