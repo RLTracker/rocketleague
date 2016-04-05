@@ -10,8 +10,10 @@ module RocketLeague
       "User-Agent" =>"UE3-TA,UE3Ver(10897)",
       "Cache-Control" =>"no-cache"
     }
-
-    def initialize(api_base = "https://psyonix-rl.appspot.com", buildid = 342373649, platform = "Steam", loginsecretkey = "dUe3SE4YsR8B0c30E6r7F2KqpZSbGiVx", playername, playerid, authcode)
+    # playername cannot be an empty string, everything else should be accpted
+    # playerid cannot be an empty string, everything else should be accpted
+    # authcode empty string or any integer
+    def initialize(api_base = "https://psyonix-rl.appspot.com", buildid = 1, platform = "PS4", loginsecretkey = "dUe3SE4YsR8B0c30E6r7F2KqpZSbGiVx", playername, playerid, authcode)
       @api_base = api_base
       @BuildID = buildid
       @Platform = platform
