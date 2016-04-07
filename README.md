@@ -1,6 +1,6 @@
 # RocketLeague
 
-*Who needs standars?* ¯\\\_(ツ)\_/¯
+*Who needs standards?* ¯\\\_(ツ)\_/¯
 
 A work in progress ruby gem for the Rocket League API.
 
