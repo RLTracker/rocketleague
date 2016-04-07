@@ -33,7 +33,28 @@ module RocketLeague
           params << "#{key}=#{URI.encode_www_form_component(val)}"
         end
       end
-      return params.join("&")
+      params.join("&")
+    end
+
+    # decodes a www-form-urlencoded string
+    # returns a key-value Hash, where values are either strings
+    # or Array of strings if the key is not unique
+    def formdecode str
+      result = {}
+      URI.decode_www_form(str).each do |pair|
+        key = pair.first
+        val = pair.last
+        if result.key? key
+          if result[key].kind_of? Array
+            result[key] << val
+          else
+            result[key] = [result[key], val]
+          end
+        else
+          result[key] = val
+        end
+      end
+      result
     end
 
     # creates a Psyonix-Style Proclist body
@@ -53,7 +74,24 @@ module RocketLeague
       formencode payload
     end
 
-    # perform a POST request to the Rocket League API
+    # parses the response to a Proc request
+    # returns an Array of results, which should be analogue to the `procencode` command order.
+    # each result is an Array of `formdecode` Hashes.
+    def procparse response
+      results = []
+      parts = response.split(/^\r\n/) # Psyonix ¯\_(ツ)_/¯
+      parts.each do |part|
+        result = []
+        lines = part.split "\r\n"
+        lines.each do |line|
+          result << formdecode(line)
+        end
+        results << result
+      end
+      results
+    end
+
+    # performs a POST request to the Rocket League API
     # with the `DEFAULT_HEADERS` and `extra_headers`
     # SessionID and CallProcKey headers are added unless SessionID is unset
     # returns HTTPResponse
@@ -75,7 +113,7 @@ module RocketLeague
       http.request(req)
     end
 
-    # initiate a new session by authenticating against the API
+    # initiates a new session by authenticating against the API
     # returns boolean whether a SessionID was returned
     def login player_id, player_name, auth_code
       payload = formencode({
@@ -87,7 +125,7 @@ module RocketLeague
         "IssuerID" => 0
       })
       response = request("/auth/", {"LoginSecretKey" => @login_secret_key }, payload)
-      return !!(@SessionID = response["sessionid"])
+      !!(@SessionID = response["sessionid"])
     end
   end
 end
