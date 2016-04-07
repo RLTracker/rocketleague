@@ -21,7 +21,7 @@ rl.login 123456789, "MyUserName", "MyAuthCode"
 
 # we want to get some generic info + game servers
 payload = rl.procencode([["GetGenericDataAll"], ["GetGameServerPingList"]])
-response = rl.request "/callproc105/", {}, payload
+response = rl.request "/callproc105/", payload
 
 # parse the response
 result = rl.procparse(response.body)
