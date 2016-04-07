@@ -17,7 +17,7 @@ rl.login 123456789, "MyUserName", "MyAuthCode"
 
 # we want to get some generic info
 payload = rl.procencode([["GetGenericDataAll"]])
-res = rl.request "/callproc105/", {}, payload)
+res = rl.request "/callproc105/", {}, payload
 
 # use this otherwise
 # response parsing is TBI
