@@ -79,7 +79,8 @@ module RocketLeague
     # each result is an Array of `formdecode` Hashes.
     def procparse response
       results = []
-      parts = response.split(/^\r\n/) # Psyonix ¯\_(ツ)_/¯
+      parts = response.split(/^\r\n/, -1) # Psyonix ¯\_(ツ)_/¯
+      parts.pop
       parts.each do |part|
         result = []
         lines = part.split "\r\n"
