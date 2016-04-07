@@ -47,7 +47,7 @@ module RocketLeague
       procs = []
       commands.each_with_index do |cmd, i|
         procs << cmd.shift
-        payload["P#{i}P"] = cmd
+        payload["P#{i}P[]"] = cmd
       end
       payload["Proc[]"] = procs
       formencode payload
