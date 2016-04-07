@@ -11,6 +11,12 @@ module RocketLeague
       "Cache-Control" => "no-cache"
     }
 
+    # initializes the API
+    # api_url should be "https://psyonix-rl.appspot.com"
+    # build_id changes with every Rocket League update
+    # platform is one of "Steam", "PS4", "XboxOne"
+    # login_secret_key should be "dUe3SE4YsR8B0c30E6r7F2KqpZSbGiVx" (it's not very secret)
+    # call_proc_key should be "pX9pn8F4JnBpoO8Aa219QC6N7g18FJ0F"
     def initialize(api_url, build_id, platform, login_secret_key, call_proc_key)
       @api_url = api_url
       @build_id = build_id
