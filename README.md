@@ -1,8 +1,12 @@
-# RocketLeague
+# RocketLeague [![Gem](https://img.shields.io/gem/v/rocketleague.svg?style=flat-square)](https://rubygems.org/gems/rocketleague)
 
 *Who needs standards?* ¯\\\_(ツ)\_/¯
 
 A work in progress ruby gem for the Rocket League API.
+
+```shell
+gem install rocketleague
+```
 
 ## Example usage
 
