@@ -86,22 +86,21 @@ module RocketLeague
     # each result is an Array of `formdecode` Hashes.
     def procparse response
       results = []
+      # remove trailing empty line
+      response.gsub! /\r?\n\z/, ''
       # split on empty lines
-      # may be first or intermediate lines
-      # last line is ignored because it's removed afterwards
+      # may be first, intermediate, or last line
       # may be using CRLF or LF
       # Psyonix ¯\_(ツ)_/¯
-      parts = response.split(/^\r?$\n|\r?\n\r?\n/, -1)
-      # requests usually contain a trailing empty new line
-      parts.pop if parts.length > 1 && parts.last =~ /^\s*$/
+      parts = response.split(/^\r?$\n|\r?\n\r?\n|\r?$\n$/, -1)
       parts.each do |part|
         result = []
-        lines = part.split "\r\n"
+        lines = part.split /\r?\n/, -1
         lines.each do |line|
           # PROCEDURE ERROR = Function does not exist
           # SCRIPT ERROR    = Function parameters missing or invalid
           # SQL ERROR       = Data not available
-          if line =~ /^(PROCEDURE|SCRIPT|SQL|) ERROR/
+          if line =~ /^(PROCEDURE|SCRIPT|SQL) ERROR/
             raise RuntimeError, line
           end
           result << formdecode(line)
