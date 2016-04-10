@@ -97,6 +97,12 @@ module RocketLeague
         result = []
         lines = part.split "\r\n"
         lines.each do |line|
+          # PROCEDURE ERROR = Function does not exist
+          # SCRIPT ERROR    = Function parameters missing or invalid
+          # SQL ERROR       = Data not available
+          if line =~ /^(PROCEDURE|SCRIPT|SQL|) ERROR/
+            raise RuntimeError, line
+          end
           result << formdecode(line)
         end
         results << result
