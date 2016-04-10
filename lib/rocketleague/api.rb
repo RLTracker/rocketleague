@@ -29,17 +29,17 @@ module RocketLeague
     # which always starts with '&'
     # and keys are not encoded (e.g. contain unencoded '[]')
     def formencode obj
-      params = [""]
+      params = ""
       obj.each do |key, val|
         if val.kind_of? Array
           val.each do |v|
-            params << "#{key}=#{URI.encode_www_form_component(v)}"
+            params += "&#{key}=#{URI.encode_www_form_component(v)}"
           end
         else
-          params << "#{key}=#{URI.encode_www_form_component(val)}"
+          params += "&#{key}=#{URI.encode_www_form_component(val)}"
         end
       end
-      params.join("&")
+      params
     end
 
     # decodes a www-form-urlencoded string
