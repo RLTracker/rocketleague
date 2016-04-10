@@ -4,6 +4,7 @@ require "net/https"
 
 module RocketLeague
   class API
+    # static default headers sent with every request
     DEFAULT_HEADERS = {
       "Content-Type" => "application/x-www-form-urlencoded",
       "Environment" => "Prod",
