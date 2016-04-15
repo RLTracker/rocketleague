@@ -1,4 +1,4 @@
-# RocketLeague [![Gem](https://img.shields.io/gem/v/rocketleague.svg?style=flat-square)](https://rubygems.org/gems/rocketleague)
+# RocketLeague [![Gem](https://img.shields.io/gem/v/rocketleague.svg?style=flat-square)](https://rubygems.org/gems/rocketleague) [![Travis](https://img.shields.io/travis/rltracker/rocketleague/master.svg?style=flat-square)](https://travis-ci.org/rltracker/rocketleague/branches)
 
 *Who needs standards?* ¯\\\_(ツ)\_/¯
 
