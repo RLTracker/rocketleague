@@ -4,6 +4,8 @@ require "net/https"
 
 module RocketLeague
   class API
+    attr_reader :session_id
+
     # static default headers sent with every request
     DEFAULT_HEADERS = {
       "Content-Type" => "application/x-www-form-urlencoded",
@@ -18,12 +20,14 @@ module RocketLeague
     # platform is one of "Steam", "PS4", "XboxOne"
     # login_secret_key should be "dUe3SE4YsR8B0c30E6r7F2KqpZSbGiVx" (it's not very secret)
     # call_proc_key should be "pX9pn8F4JnBpoO8Aa219QC6N7g18FJ0F"
-    def initialize(api_url, build_id, platform, login_secret_key, call_proc_key)
+    # session_id can optionally be used if you have an existing session
+    def initialize(api_url, build_id, platform, login_secret_key, call_proc_key, session_id=nil)
       @api_url = api_url
       @build_id = build_id
       @platform = platform
       @login_secret_key = login_secret_key
       @call_proc_key = call_proc_key
+      @session_id = session_id
     end
 
     # returns a Psyonix-Style www-form-urlencoded string
@@ -119,10 +123,10 @@ module RocketLeague
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = (uri.scheme == "https")
 
-      if @SessionID
+      if @session_id
         # Used for all requests except initial auth call
         exra_headers.merge!({
-          "SessionID" => @SessionID,
+          "SessionID" => @session_id,
           "CallProcKey" => @call_proc_key
         })
       end
@@ -144,7 +148,7 @@ module RocketLeague
         "IssuerID" => 0
       })
       response = request("/auth/", {"LoginSecretKey" => @login_secret_key }, payload)
-      !!(@SessionID = response["sessionid"])
+      !!(@session_id = response["sessionid"])
     end
   end
 end
