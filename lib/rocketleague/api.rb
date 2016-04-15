@@ -122,6 +122,7 @@ module RocketLeague
       uri = URI.parse(@api_url)
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = (uri.scheme == "https")
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE if http.use_ssl?
 
       if @session_id
         # Used for all requests except initial auth call
