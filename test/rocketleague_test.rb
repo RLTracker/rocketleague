@@ -33,6 +33,8 @@ describe RocketLeague do
     DataKey=BugReports&DataValue=0
     DataKey=RankEnabled&DataValue=1
 
+    SQL ERROR: Whatever
+
     END
     parsed = @rl.procparse(response)
     expected = [
@@ -53,6 +55,9 @@ describe RocketLeague do
         {"DataKey"=>"Analytics", "DataValue"=>"1"},
         {"DataKey"=>"BugReports", "DataValue"=>"0"},
         {"DataKey"=>"RankEnabled", "DataValue"=>"1"}
+      ],
+      [
+        RuntimeError.new("SQL ERROR: Whatever")
       ],
       []
     ]

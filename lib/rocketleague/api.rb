@@ -87,7 +87,7 @@ module RocketLeague
 
     # parses the response to a Proc request
     # returns an Array of results, which should be analogue to the `procencode` command order.
-    # each result is an Array of `formdecode` Hashes.
+    # each result is an Array of `formdecode` Hashes and/or RuntimeErrors
     def procparse response
       results = []
       # remove trailing empty line
@@ -105,9 +105,12 @@ module RocketLeague
           # SCRIPT ERROR    = Function parameters missing or invalid
           # SQL ERROR       = Data not available
           if line =~ /^(PROCEDURE|SCRIPT|SQL) ERROR/
-            raise RuntimeError, line
+            # Can be on a single line while others are fine
+            # We don't want to raise an exception cause 1 line failed
+            result << RuntimeError.new(line)
+          else
+            result << formdecode(line)
           end
-          result << formdecode(line)
         end
         results << result
       end
