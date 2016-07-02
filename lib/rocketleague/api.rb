@@ -5,14 +5,7 @@ require "net/https"
 module RocketLeague
   class API
     attr_reader :session_id
-
-    # static default headers sent with every request
-    DEFAULT_HEADERS = {
-      "Content-Type" => "application/x-www-form-urlencoded",
-      "Environment" => "Prod",
-      "User-Agent" => "UE3-TA,UE3Ver(10897)",
-      "Cache-Control" => "no-cache"
-    }
+    attr_accessor :default_headers
 
     # initializes the API
     # api_url should be "https://psyonix-rl.appspot.com"
@@ -22,6 +15,14 @@ module RocketLeague
     # call_proc_key should be "pX9pn8F4JnBpoO8Aa219QC6N7g18FJ0F"
     # session_id can optionally be used if you have an existing session
     def initialize(api_url, build_id, platform, login_secret_key, call_proc_key, session_id=nil)
+      # default headers sent with every request
+      @default_headers = {
+        "Content-Type" => "application/x-www-form-urlencoded",
+        "Environment" => "Prod",
+        "User-Agent" => "UE3-TA,UE3Ver(10897)",
+        "Cache-Control" => "no-cache"
+      }
+
       @api_url = api_url
       @build_id = build_id
       @platform = platform
@@ -118,7 +119,7 @@ module RocketLeague
     end
 
     # performs a POST request to the Rocket League API
-    # with the `DEFAULT_HEADERS` and `extra_headers`
+    # with the `default_headers` and `extra_headers`
     # SessionID and CallProcKey headers are added unless SessionID is unset
     # returns HTTPResponse
     def request(path, exra_headers = {}, payload)
@@ -134,7 +135,7 @@ module RocketLeague
         })
       end
 
-      req = Net::HTTP::Post.new(path, DEFAULT_HEADERS.merge(exra_headers))
+      req = Net::HTTP::Post.new(path, @default_headers.merge(exra_headers))
       req.body = payload
       http.request(req)
     end
