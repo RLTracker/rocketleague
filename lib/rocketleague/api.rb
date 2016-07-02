@@ -139,13 +139,14 @@ module RocketLeague
     # initiates a new session by authenticating against the API
     # login_secret_key is usually "dUe3SE4YsR8B0c30E6r7F2KqpZSbGiVx"
     # returns boolean whether a SessionID was received
-    def login(player_id, player_name, auth_code, login_secret_key)
+    def login(player_id, player_name, auth_code, auth_ticket, login_secret_key)
       payload = formencode({
         "PlayerName" => player_name,
         "PlayerID" => player_id,
         "Platform" => @platform,
         "BuildID" => @build_id,
         "AuthCode" => auth_code,
+        "AuthTicket" => auth_ticket,
         "IssuerID" => 0
       })
       response = request("/auth/", {"LoginSecretKey" => login_secret_key }, payload)
