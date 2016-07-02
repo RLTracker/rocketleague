@@ -30,7 +30,7 @@ module RocketLeague
     # returns a Psyonix-Style www-form-urlencoded string
     # which always starts with '&'
     # and keys are not encoded (e.g. contain unencoded '[]')
-    def formencode obj
+    def formencode(obj)
       params = ""
       obj.each do |key, val|
         if val.kind_of? Array
@@ -47,7 +47,7 @@ module RocketLeague
     # decodes a www-form-urlencoded string
     # returns a key-value Hash, where values are either strings
     # or Array of strings if the key is not unique
-    def formdecode str
+    def formdecode(str)
       result = {}
       URI.decode_www_form(str).each do |pair|
         key = pair.first
@@ -71,7 +71,7 @@ module RocketLeague
     # followed by option arguments
     #
     # returns a `formencode` string with 'Proc[]=' function names and 'P#P=' arguments, where '#' is the index of the Proc
-    def procencode commands
+    def procencode(commands)
       payload = {}
       procs = []
       commands.each_with_index do |cmd, i|
@@ -85,7 +85,7 @@ module RocketLeague
     # parses the response to a Proc request
     # returns an Array of results, which should be analogue to the `procencode` command order.
     # each result is an Array of `formdecode` Hashes and/or RuntimeErrors
-    def procparse response
+    def procparse(response)
       results = []
       # remove trailing empty line
       response.gsub! /\r?\n\z/, ''
@@ -118,7 +118,7 @@ module RocketLeague
     # with the `default_headers` and `extra_headers`
     # SessionID and CallProcKey headers are added unless SessionID is unset
     # returns HTTPResponse
-    def request(path, exra_headers = {}, payload)
+    def request(path,exra_headers = {}, payload)
       uri = URI.parse(@api_url)
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = (uri.scheme == "https")
@@ -139,7 +139,7 @@ module RocketLeague
     # initiates a new session by authenticating against the API
     # login_secret_key is usually "dUe3SE4YsR8B0c30E6r7F2KqpZSbGiVx"
     # returns boolean whether a SessionID was received
-    def login player_id, player_name, auth_code, login_secret_key
+    def login(player_id, player_name, auth_code, login_secret_key)
       payload = formencode({
         "PlayerName" => player_name,
         "PlayerID" => player_id,
