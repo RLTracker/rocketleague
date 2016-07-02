@@ -4,17 +4,15 @@ require "net/https"
 
 module RocketLeague
   class API
-    attr_reader :session_id
+    attr_accessor :session_id
     attr_accessor :default_headers
 
     # initializes the API
     # api_url should be "https://psyonix-rl.appspot.com"
     # build_id changes with every Rocket League update
     # platform is one of "Steam", "PS4", "XboxOne"
-    # login_secret_key should be "dUe3SE4YsR8B0c30E6r7F2KqpZSbGiVx" (it's not very secret)
-    # call_proc_key should be "pX9pn8F4JnBpoO8Aa219QC6N7g18FJ0F"
-    # session_id can optionally be used if you have an existing session
-    def initialize(api_url, build_id, platform, login_secret_key, call_proc_key, session_id=nil)
+    # call_proc_key is usually "pX9pn8F4JnBpoO8Aa219QC6N7g18FJ0F"
+    def initialize(api_url, build_id, platform, call_proc_key)
       # default headers sent with every request
       @default_headers = {
         "Content-Type" => "application/x-www-form-urlencoded",
@@ -26,9 +24,7 @@ module RocketLeague
       @api_url = api_url
       @build_id = build_id
       @platform = platform
-      @login_secret_key = login_secret_key
       @call_proc_key = call_proc_key
-      @session_id = session_id
     end
 
     # returns a Psyonix-Style www-form-urlencoded string
@@ -141,8 +137,9 @@ module RocketLeague
     end
 
     # initiates a new session by authenticating against the API
-    # returns boolean whether a SessionID was returned
-    def login player_id, player_name, auth_code
+    # login_secret_key is usually "dUe3SE4YsR8B0c30E6r7F2KqpZSbGiVx"
+    # returns boolean whether a SessionID was received
+    def login player_id, player_name, auth_code, login_secret_key
       payload = formencode({
         "PlayerName" => player_name,
         "PlayerID" => player_id,
@@ -151,7 +148,7 @@ module RocketLeague
         "AuthCode" => auth_code,
         "IssuerID" => 0
       })
-      response = request("/auth/", {"LoginSecretKey" => @login_secret_key }, payload)
+      response = request("/auth/", {"LoginSecretKey" => login_secret_key }, payload)
       !!(@session_id = response["sessionid"])
     end
   end
