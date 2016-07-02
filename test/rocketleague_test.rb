@@ -2,7 +2,7 @@ require 'test_helper'
 
 describe RocketLeague do
   before do
-    @rl = RocketLeague::API.new "https://example.com", 1, "Steam", "loginkey", "callprockey"
+    @rl = RocketLeague::API.new "https://example.com", 1, "Steam", "callprockey"
   end
 
   it "must have a version number" do
